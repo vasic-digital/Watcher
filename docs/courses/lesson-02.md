@@ -95,6 +95,8 @@ for event := range w.Events() {
 }
 ```
 
-## Summary
+## Practice Exercise
 
-Filters and handlers decouple event selection from event processing. Compose filters with boolean combinators to express complex matching rules. Chain handlers into sequential pipelines for clean, modular event processing.
+1. Create a filter that matches only Create events for `.go` files excluding `*_test.go`. Test with various event types and filenames.
+2. Build a handler chain with three handlers: a counter, a logger, and a validator that rejects files over 1MB. Verify the chain stops on the validator error.
+3. Compose a complex filter using And, Or, and Not: match video files (.mp4, .mkv) or image files (.jpg, .png) that are Create or Write events, excluding anything in a `.cache` directory. Test with 10 different events.

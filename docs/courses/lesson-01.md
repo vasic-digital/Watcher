@@ -98,6 +98,8 @@ for event := range w.Events() {
 
 When `DebounceDelay > 0`, the watcher coalesces rapid events for the same path. Only the last event within the delay window is forwarded. The generation counter prevents stale timer callbacks from firing.
 
-## Summary
+## Practice Exercise
 
-The `watcher` package provides a high-level, context-aware API for filesystem monitoring. Recursive watching, ignore patterns, and built-in debouncing handle the common pain points of raw fsnotify.
+1. Create a watcher with recursive=true and a temporary directory. Create a file inside, then create a subdirectory with a file inside it. Verify events are received for both levels.
+2. Configure ignore patterns for `*.tmp` and `.git`. Create matching and non-matching files. Verify only non-matching files produce events.
+3. Set `DebounceDelay=200ms`. Write to the same file 10 times rapidly. Verify only one event is received for that file (the last one).

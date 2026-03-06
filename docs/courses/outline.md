@@ -1,9 +1,26 @@
-# Course: Filesystem Watching in Go
+# Course: Filesystem Change Monitoring in Go
 
-Learn to monitor filesystem changes, filter events, and build processing pipelines using `digital.vasic.watcher`.
+## Module Overview
+
+This course covers the `digital.vasic.watcher` module, which wraps `fsnotify` with recursive directory watching, configurable ignore patterns, event debouncing, composable filters with boolean combinators, and handler chains. You will learn to build reactive file monitoring pipelines.
+
+## Prerequisites
+
+- Intermediate Go knowledge (goroutines, channels, filesystem operations)
+- Basic understanding of filesystem events (create, write, remove, rename)
+- Go 1.24+ installed
 
 ## Lessons
 
-1. **The Watcher** -- The `Watcher` interface, fsnotify integration, recursive watching, ignore patterns, and event debouncing.
-2. **Filters and Handlers** -- Composable `Filter` with `And`/`Or`/`Not`, `Handler` interface, `HandlerFunc` adapter, and `Chain` pipelines.
-3. **Standalone Debouncing** -- The `Debouncer` type, generation counters, and integrating debouncing into custom event systems.
+| # | Title | Duration |
+|---|-------|----------|
+| 1 | The Watcher -- Recursive Watching and Debouncing | 40 min |
+| 2 | Filters and Handlers -- Composable Event Pipelines | 40 min |
+| 3 | Standalone Debouncing -- Generation Counters | 35 min |
+
+## Source Files
+
+- `pkg/watcher/` -- Core Watcher interface, fsnotify adapter, recursive watching
+- `pkg/debounce/` -- Standalone debouncer with generation-counted timers
+- `pkg/filter/` -- Composable Filter interface with And/Or/Not combinators
+- `pkg/handler/` -- Handler interface, HandlerFunc adapter, Chain

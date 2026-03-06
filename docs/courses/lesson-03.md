@@ -71,6 +71,8 @@ d.Close() // stops all pending timers, closes output channel
 
 After `Close`, `Add` calls are no-ops. The `closed` flag is checked under the mutex.
 
-## Summary
+## Practice Exercise
 
-The standalone `Debouncer` is useful anywhere rapid events need coalescing -- file watchers, UI input, sensor data. Generation counters ensure correctness by preventing stale timer callbacks from delivering outdated events.
+1. Create a `Debouncer` with a 200ms delay. Add 10 events for the same path within 50ms. Wait 300ms and verify exactly one event is received from `Events()`.
+2. Add events for 3 different paths rapidly. Verify each path produces exactly one debounced event.
+3. Verify `Close()` idempotency: create a debouncer, close it twice, and verify no panic. Also verify that `Add()` after `Close()` is a no-op.
