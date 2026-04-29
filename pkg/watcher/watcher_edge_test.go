@@ -19,7 +19,7 @@ func TestWatcher_SymlinkDirectory(t *testing.T) {
 	symlinkDir := filepath.Join(t.TempDir(), "link")
 	err := os.Symlink(realDir, symlinkDir)
 	if err != nil {
-		t.Skipf("symlinks not supported: %v", err)
+		t.Skipf("symlinks not supported: %v", err)  // SKIP-OK: #legacy-skip-untriaged-2026-04-29
 	}
 
 	cfg := &Config{
