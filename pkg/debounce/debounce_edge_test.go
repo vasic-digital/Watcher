@@ -206,6 +206,7 @@ func TestDebouncer_CloseStopsPendingTimers(t *testing.T) {
 // TestDebouncer_ConcurrentAddAndClose verifies that calling Add and Close
 // concurrently does not cause races or panics.
 func TestDebouncer_ConcurrentAddAndClose(t *testing.T) {
+	// bluff-scan: no-assert-ok (concurrency test — go test -race catches data races; absence of panic == correctness)
 	d := New(50*time.Millisecond, 100)
 
 	var wg sync.WaitGroup
