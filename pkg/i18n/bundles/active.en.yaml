@@ -1,0 +1,23 @@
+# Watcher i18n bundle — English (default).
+#
+# Keys are prefixed `watcher_` to avoid collision with sibling
+# submodule catalogues that a consuming project (e.g. HelixCode) may
+# merge into a single bundle store. Per CONST-046 the consuming
+# project's project-side translator is the authority that fans out
+# locale overrides; this bundle is the canonical English source.
+#
+# Round-127 §11.4 — kickoff scope: filesystem event type labels
+# (create, write, remove, rename, chmod, unknown). These companion
+# keys exist for UI / CLI surfaces that need locale-aware event
+# rendering; the existing `EventType.String()` programmatic
+# identifiers stay verbatim for round-trip stability and protocol
+# comparability. Subsequent rounds will widen coverage to handler
+# error messages, filter validation diagnostics, and watcher
+# lifecycle status text as those surfaces become user-facing.
+
+watcher_event_create: "File created: {{path}}"
+watcher_event_write: "File modified: {{path}}"
+watcher_event_remove: "File removed: {{path}}"
+watcher_event_rename: "File renamed: {{old_path}} -> {{path}}"
+watcher_event_chmod: "File permissions changed: {{path}}"
+watcher_event_unknown: "Unknown filesystem event for: {{path}}"
