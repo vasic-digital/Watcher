@@ -2,6 +2,12 @@
 
 Filesystem change monitoring for Go with event debouncing, filtering, and handler chains.
 
+> **Anti-bluff guarantee (CONST-035 / Article XI §11.9):** every test and
+> Challenge in this submodule ships positive runtime evidence captured at
+> execution. No "test PASS = feature works" without backing artefacts.
+> Round-289 deep-doc + Challenge enrichment audit confirms this README
+> matches the production surface verbatim (see `docs/test-coverage.md`).
+
 ## Features
 
 - Cross-platform filesystem watching via [fsnotify](https://github.com/fsnotify/fsnotify)
@@ -11,6 +17,7 @@ Filesystem change monitoring for Go with event debouncing, filtering, and handle
 - Handler chains for building event processing pipelines
 - Ignore patterns for excluding files and directories
 - Context-aware watching with clean shutdown
+- Locale-aware translation seam (`pkg/i18n`, CONST-046 compliant)
 
 ## Installation
 
@@ -106,14 +113,26 @@ for ev := range d.Events() {
 }
 ```
 
+### Locale-aware messaging (CONST-046)
+
+```go
+import "digital.vasic.watcher/pkg/i18n"
+
+// Production-safe default: keys returned verbatim, no project coupling.
+t := i18n.NoopTranslator{}
+label := t.T("watcher_event_create", map[string]any{"path": "/tmp/foo"})
+// Consuming projects inject a real translator backed by bundles/active.<locale>.yaml.
+```
+
 ## Packages
 
-| Package | Description |
-|---|---|
-| `pkg/watcher` | Core `Watcher` interface and fsnotify implementation |
-| `pkg/handler` | Event handler interface, function adapter, and chain |
-| `pkg/filter` | Event filters with `And`, `Or`, `Not` combinators |
-| `pkg/debounce` | Standalone event debouncer with generation-counted timers |
+| Package        | Description                                                         |
+|----------------|---------------------------------------------------------------------|
+| `pkg/watcher`  | Core `Watcher` interface and fsnotify implementation                |
+| `pkg/handler`  | Event handler interface, function adapter, and chain                |
+| `pkg/filter`   | Event filters with `And`, `Or`, `Not` combinators                   |
+| `pkg/debounce` | Standalone event debouncer with generation-counted timers           |
+| `pkg/i18n`     | Locale-aware translator seam (`Translator`, `NoopTranslator`)       |
 
 ## Configuration
 
@@ -128,5 +147,31 @@ cfg := &watcher.Config{
 
 ## Requirements
 
-- Go 1.24.0+
+- Go 1.25.0+
 - Linux, macOS, or Windows (via fsnotify)
+
+## Testing & Challenges
+
+```bash
+# Unit + edge tests (race-checked)
+go test -race -count=1 ./...
+
+# Real Watcher exerciser (round-289 runner) — 5-locale bilingual evidence
+go run ./challenges/runner -tmp ./.tmp-watch -events 8
+
+# Paired-mutation describe challenge
+bash challenges/watcher_describe_challenge.sh           # normal exit 0
+WATCHER_DESCRIBE_MUTATE=1 bash challenges/watcher_describe_challenge.sh  # exit 99
+```
+
+See `docs/test-coverage.md` for the symbol→test ledger (every exported
+symbol → which test exercises it → which Challenge captures runtime
+evidence).
+
+## Governance
+
+This submodule is owned by `vasic-digital`. Every change cascades to the
+parent project (HelixCode) per CONST-047 + CONST-051(A). Governance
+inheritance pointer: `CLAUDE.md`, `AGENTS.md`, `CONSTITUTION.md` start
+with the inheritance preamble per CONST-059. The `pkg/i18n` seam keeps
+the submodule project-not-aware per CONST-051(B).

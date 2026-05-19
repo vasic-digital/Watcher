@@ -1,0 +1,8 @@
+# 5-locale bilingual fixture — sr (Serbian, Latin script)
+locale: sr
+labels:
+  watcher_event_create: "Datoteka kreirana"
+  watcher_event_write: "Datoteka upisana"
+  watcher_event_remove: "Datoteka uklonjena"
+  watcher_event_rename: "Datoteka preimenovana"
+  watcher_event_chmod: "Dozvole promenjene"

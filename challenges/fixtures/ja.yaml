@@ -1,0 +1,8 @@
+# 5-locale bilingual fixture — ja (Japanese)
+locale: ja
+labels:
+  watcher_event_create: "ファイル作成"
+  watcher_event_write: "ファイル書き込み"
+  watcher_event_remove: "ファイル削除"
+  watcher_event_rename: "ファイル名変更"
+  watcher_event_chmod: "権限変更"

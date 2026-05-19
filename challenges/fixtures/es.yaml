@@ -1,0 +1,8 @@
+# 5-locale bilingual fixture — es (Spanish)
+locale: es
+labels:
+  watcher_event_create: "Archivo creado"
+  watcher_event_write: "Archivo escrito"
+  watcher_event_remove: "Archivo eliminado"
+  watcher_event_rename: "Archivo renombrado"
+  watcher_event_chmod: "Permisos cambiados"

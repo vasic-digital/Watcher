@@ -1,0 +1,11 @@
+# 5-locale bilingual fixture — en (English)
+# Round-289 Watcher Challenge bundle. Keys MUST match the runner's
+# expected set: watcher_event_create, watcher_event_write,
+# watcher_event_remove, watcher_event_rename, watcher_event_chmod.
+locale: en
+labels:
+  watcher_event_create: "File created"
+  watcher_event_write: "File written"
+  watcher_event_remove: "File removed"
+  watcher_event_rename: "File renamed"
+  watcher_event_chmod: "Permissions changed"
