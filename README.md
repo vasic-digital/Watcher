@@ -171,7 +171,7 @@ evidence).
 ## Governance
 
 This submodule is owned by `vasic-digital`. Every change cascades to the
-parent project (HelixCode) per CONST-047 + CONST-051(A). Governance
+parent project per CONST-047 + CONST-051(A). Governance
 inheritance pointer: `CLAUDE.md`, `AGENTS.md`, `CONSTITUTION.md` start
 with the inheritance preamble per CONST-059. The `pkg/i18n` seam keeps
 the submodule project-not-aware per CONST-051(B).
