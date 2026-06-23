@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"sync"
 	"testing"
 	"time"
 
@@ -225,9 +226,20 @@ func TestWatcher_ConcurrentWatchClose(t *testing.T) {
 	err = w.Watch(ctx, dir)
 	require.NoError(t, err)
 
-	// Start generating events
+	// Start generating events. The writer respects ctx cancellation and is
+	// joined before the test returns, so no goroutine writes into the TempDir
+	// after the test body ends — otherwise it races t.TempDir's deferred
+	// RemoveAll cleanup ("directory not empty"), a §11.4.50 non-determinism.
+	var wg sync.WaitGroup
+	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		for i := 0; i < 20; i++ {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+			}
 			f := filepath.Join(dir, "concurrent_"+string(rune('a'+i%26))+".txt")
 			_ = os.WriteFile(f, []byte("data"), 0644)
 			time.Sleep(2 * time.Millisecond)
@@ -238,6 +250,11 @@ func TestWatcher_ConcurrentWatchClose(t *testing.T) {
 	time.Sleep(10 * time.Millisecond)
 	err = w.Close()
 	assert.NoError(t, err)
+
+	// Stop + join the writer before returning so it cannot write into the
+	// TempDir during deferred cleanup.
+	cancel()
+	wg.Wait()
 }
 
 func TestWatcher_ContextCancellation(t *testing.T) {

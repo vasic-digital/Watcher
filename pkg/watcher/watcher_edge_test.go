@@ -99,7 +99,18 @@ func TestWatcher_UnicodeDirectoryNames(t *testing.T) {
 
 			select {
 			case ev := <-w.Events():
-				assert.Equal(t, testFile, ev.Path)
+				// macOS APFS normalizes filenames to Unicode NFD, so ev.Path
+				// (the real on-disk path) can differ byte-wise from the NFC
+				// creation string for combining-char scripts (Cyrillic,
+				// accented Latin). Assert both paths resolve to the SAME file
+				// (inode) — normalization-independent and a stronger check than
+				// string equality (it proves the event is for the created file).
+				evInfo, evErr := os.Stat(ev.Path)
+				wantInfo, wantErr := os.Stat(testFile)
+				require.NoError(t, evErr, "event path must stat: %q", ev.Path)
+				require.NoError(t, wantErr, "created file must stat: %q", testFile)
+				assert.True(t, os.SameFile(evInfo, wantInfo),
+					"event path %q must be the same file as created %q", ev.Path, testFile)
 			case <-time.After(2 * time.Second):
 				t.Fatalf("timed out waiting for event in Unicode dir %q", ud.dirName)
 			}
